@@ -21,6 +21,8 @@ object TestIterable {
     testCollect()
     testReduce()
     testCollapse
+    testScanLeft
+    testZippers
   }
   def sum(lst: List[Int]):Int={
     if(lst==Nil) 0
@@ -88,6 +90,42 @@ object TestIterable {
       (m,c) =>m+(c -> (m.getOrElse(c, 0)+1))
      }
      println(freqc)
-     
+  }
+  
+  def testScanLeft={
+    val s=(1 to 10).scanLeft(0)(_ + _)
+    println(s)
+  }
+  
+  def testZippers={
+    val prices=List(5.0,20.0,9.95)
+    val quantities=List(10,2,1)
+    //zip方法让你将他们组合成一个个对偶的列表
+    val res=prices zip quantities
+    //将得到一个List[(Double,Int)]
+    println(res)
+    //这样一来对每个对偶应用函数就很容易了
+    val app=(prices zip quantities) map {p=> p._1 *p._2}
+    //结果是一个包含了价格的列表
+    println(app)
+    //所有物品的总价就是
+    val totalSum=(((prices zip quantities) map {p=>p._1*p._2}) sum)
+    println(totalSum)
+    
+    
+    val xs=List(1,2,3)
+    val ys=List("A","B")
+    val zs=List("①","②","③","④")
+    val x=0
+    val y="_"
+    //x为前面缺省值，y为后面缺省值
+    println(xs.zipAll(ys, x, y)) //List((1,A), (2,B), (3,_))
+    println(xs.zipAll(zs,x,y))//List((1,①), (2,②), (3,③), (0,④))
+    //Vector((S,0), (c,1), (a,2), (l,3), (a,4))
+    println("Scala".zipWithIndex)
+    //(l,3)
+    println("Scala".zipWithIndex.max)
+    //3
+    println("Scala".zipWithIndex.max._2)
   }
 }
