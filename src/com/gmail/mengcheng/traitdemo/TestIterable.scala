@@ -26,7 +26,7 @@ object TestIterable {
     testCollapse
     testScanLeft
     testZippers
-    testStream
+    //testStream
     testLazyView
     testExWithJava
     concurrent
@@ -211,5 +211,11 @@ object TestIterable {
     //而在for/yield循环中，结果是依次组装的
     for(i<-(0 until 100).par)
       yield print(i+" ")
+    
+    var str="Hello World"
+    println()
+    println(str.foldLeft(Set[Char]())(_+_))
+    //++和--用于批量添加和移除元素
+    println(str.par.aggregate(Set[Char]())(_+_,_++_))
   }
 }
